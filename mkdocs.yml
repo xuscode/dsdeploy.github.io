@@ -1,0 +1,69 @@
+site_name: DS DEPLOY
+
+# nav:
+#   - Home: index.md
+#   - About: about.md
+
+
+# theme:
+    # name: yeti
+    # nav_style: dark
+
+theme:
+    name: material
+    palette:
+        primary: indigo
+        scheme: slate
+        accent: "deep orange"
+    features:
+        - content.tabs.link
+        - navigation.tabs
+        - toc.integrate
+
+# theme: windmill
+
+
+plugins:
+  - mkdocs-video 
+  - tags
+  - search:
+      # separator: '[\s\u200b\-]'
+      separator: '[\s\-\.]+'
+      lang: 
+          - en
+          - ru
+          - ja
+          - zh
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+
+extra:
+  social:
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:<support.3ds.com>
+      name: Email to me 
+
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js
+  - javascripts/highlight.js
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
+
+repo_url: https://github.com/xuscode/dsdeploy.github.io.git
+
+copyright: Copyright &copy; 2022 DS USERS
+
+
