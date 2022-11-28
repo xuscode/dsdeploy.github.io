@@ -352,3 +352,44 @@ Include /app/DassaultSystemes/R2023x/3DPassport/linux_a64/templates/3DPassport_h
 ```
 
 测试3DPassport服务
+
+
+## 安装3DDashboard服务
+
+数据库脚本
+
+```bash
+dbstart $ORACLE_HOME
+
+sqlplus / as sysdba
+```
+
+```sql
+
+CREATE TABLESPACE x3ddashadmin_ts
+
+DATAFILE  '/app/oracle/oradata/MYDB/x3ddashadmin_ts.dbf' SIZE 10M
+
+AUTOEXTEND ON NEXT 10M MAXSIZE UNLIMITED
+
+EXTENT MANAGEMENT LOCAL
+
+SEGMENT SPACE MANAGEMENT AUTO;
+
+CREATE USER x3ddashadmin IDENTIFIED BY  Qwerty12345;
+
+ALTER USER x3ddashadmin DEFAULT TABLESPACE  x3ddashadmin_ts;
+
+GRANT CONNECT TO x3ddashadmin;
+
+GRANT RESOURCE TO x3ddashadmin;
+
+GRANT UNLIMITED TABLESPACE TO  x3ddashadmin;
+
+```
+
+从V6R2023x.AM_3DEXP_Platform.AllOS.3-17.iso找到
+
+```bash
+3DDashboard/Linux64/1/StartGUI.sh
+```
