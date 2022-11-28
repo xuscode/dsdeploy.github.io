@@ -13,7 +13,7 @@
     
     
       
-        <title>3DEXPERIENCE - DS DEPLOY</title>
+        <title>3DEXPERIENCE Platform Installation - DS DEPLOY</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#3dexperience" class="md-skip">
+        <a href="#3dexperience-platform-installation" class="md-skip">
           Skip to content
         </a>
       
@@ -105,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              3DEXPERIENCE
+              3DEXPERIENCE Platform Installation
             
           </span>
         </div>
@@ -310,9 +310,96 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          3DEXPERIENCE Platform Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
-        3DEXPERIENCE
+        3DEXPERIENCE Platform Installation
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    关闭防火墙
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    检查机器名
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    新建用户
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    修改该用户的环境变量
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    创建安装数据库的目录并开通权限
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    安装数据库
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apache" class="md-nav__link">
+    安装Apache
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -348,7 +435,260 @@
   </a>
 
 
-<h1 id="3dexperience">3DEXPERIENCE</h1>
+<h1 id="3dexperience-platform-installation">3DEXPERIENCE Platform Installation</h1>
+<h2 id="_1"></h2>
+<div class="highlight"><pre><span></span><code>cat /etc/redhat-release
+</code></pre></div>
+<h2 id="_2"></h2>
+<div class="highlight"><pre><span></span><code>rpm -Uvh  ksh-20120801-139.el7.x86_64.rpm
+rpm -Uvh  libaio-devel-0.3.109-13.el7.x86_64.rpm
+rpm -Uvh  libaio-0.3.109-13.el7.x86_64.rpm
+rpm -Uvh  numactl-devel-2.0.9-7.el7.x86_64.rpm
+rpm -Uvh  redhat-lsb-core-4.1-27.el7.centos.1.x86_64.rpm  redhat-lsb-submod-security-4.1-27.el7.centos.1.x86_64.rpm  spax-1.5.2-13.el7.x86_64.rpm
+rpm -Uvh  motif-2.3.4-14.el7_5.x86_64.rpm libXp-1.0.2-2.1.el7.x86_64.rpm  xorg-x11-xbitmaps-1.1.1-6.el7.noarch.rpm
+rpm  -Uvh httpd-2.4.6-88.el7.centos.x86_64.rpm  httpd-tools-2.4.6-88.el7.centos.x86_64.rpm
+rpm -Uvh  mod_ssl-2.4.6-88.el7.centos.x86_64.rpm
+rpm -Uvh  zlib-devel-1.2.7-18.el7.x86_64.rpm
+rpm -Uvh  compat-libstdc++-33-3.2.3-72.el7.x86_64.rpm
+rpm -Uvh  xorg-x11-server-Xvfb-1.20.1-3.el7.x86_64.rpm
+</code></pre></div>
+<h2 id="_3">关闭防火墙</h2>
+<div class="highlight"><pre><span></span><code>systemctl disable firewalld
+systemctl stop firewalld
+firewall-cmd –state
+</code></pre></div>
+<h2 id="_4">检查机器名</h2>
+<div class="highlight"><pre><span></span><code>hostname
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="m">192</span>.168.100.1 r2023x.3ds.com r2023x
+<span class="m">192</span>.168.100.1 r2023x.3ds.com untrusted
+<span class="m">192</span>.168.100.2 dsls_server
+</code></pre></div>
+<h2 id="_5">新建用户</h2>
+<p>新建一个用户用于3DE的安装，建议不要使用root安装。</p>
+<div class="highlight"><pre><span></span><code>groupadd -g <span class="m">501</span> oinstall
+groupadd -g <span class="m">502</span> dba
+groupadd -g <span class="m">503</span> oper
+groupadd -g <span class="m">504</span> backupdba
+groupadd -g <span class="m">505</span> dgdba
+groupadd -g <span class="m">506</span> kmdba
+groupadd -g <span class="m">507</span> asmdba
+groupadd -g <span class="m">508</span> asmoper
+groupadd -g <span class="m">509</span> asmadmin
+usermod -g oinstall -G  dba,oper,backupdba,dgdba,asmdba,asmoper,asmadmin,kmdba x3ds
+</code></pre></div>
+<h2 id="_6">修改该用户的环境变量</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># vi /home/x3ds/.bash_profile</span>
+
+&lt;add the following lines at the bottom of file&gt;
+<span class="nv">TMP</span><span class="o">=</span>/tmp<span class="p">;</span> <span class="nb">export</span> TMP
+<span class="nv">TMPDIR</span><span class="o">=</span><span class="nv">$TMP</span><span class="p">;</span> <span class="nb">export</span> TMPDIR
+<span class="nv">ORACLE_HOSTNAME</span><span class="o">=</span>r2023x.mydomain.com<span class="p">;</span>  <span class="nb">export</span> ORACLE_HOSTNAME
+<span class="nv">ORACLE_UNQNAME</span><span class="o">=</span>MYDB<span class="p">;</span> <span class="nb">export</span>  ORACLE_UNQNAME
+<span class="nv">ORACLE_BASE</span><span class="o">=</span>/app/oracle<span class="p">;</span> <span class="nb">export</span>  ORACLE_BASE
+<span class="nv">ORACLE_HOME</span><span class="o">=</span><span class="nv">$ORACLE_BASE</span>/product/19.3.0.0/db_1<span class="p">;</span>  <span class="nb">export</span> ORACLE_HOME
+<span class="nv">ORACLE_SID</span><span class="o">=</span>MYDB<span class="p">;</span> <span class="nb">export</span> ORACLE_SID
+<span class="nv">PATH</span><span class="o">=</span>/usr/sbin:<span class="nv">$PATH</span><span class="p">;</span> <span class="nb">export</span> PATH
+<span class="nv">PATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/bin:<span class="nv">$PATH</span><span class="p">;</span> <span class="nb">export</span> PATH
+<span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/lib:/lib:/usr/lib:/usr/local/lib<span class="p">;</span>  <span class="nb">export</span> LD_LIBRARY_PATH
+<span class="nv">CLASSPATH</span><span class="o">=</span><span class="nv">$ORACLE_HOME</span>/jlib:<span class="nv">$ORACLE_HOME</span>/rdbms/jlib<span class="p">;</span> <span class="nb">export</span>  CLASSPATH
+</code></pre></div>
+<p>配置完成后需要运行source ~/.bash_profile 生效，或者重启操作系统生效。</p>
+<h2 id="_7">创建安装数据库的目录并开通权限</h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /
+mkdir app
+chmod -R <span class="m">777</span> app
+<span class="nb">cd</span> /app
+mkdir -p ./oracle/product/19.3.0.0/db_1
+chown -R x3ds:oinstall ./oracle
+</code></pre></div>
+<h2 id="_8">安装数据库</h2>
+<p>拷贝LINUX.X64_193000_db_home.zip into  /tmp</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span>  /app/oracle/product/19.3.0.0/db_1
+unzip  /tmp/LINUX.X64_193000_db_home.zip
+</code></pre></div>
+<p>安装Oracle19c数据库之前请编辑以下文件</p>
+<p><div class="highlight"><pre><span></span><code>vi  /app/oracle/product/19.3.0.0/db_1/cv/admin/cvu_config
+</code></pre></div>
+<add the following>
+<div class="highlight"><pre><span></span><code><span class="nv">CV_ASSUME_DISTID</span><span class="o">=</span>OEL8.1
+</code></pre></div>
+:x保存
+使用新建用户x3ds运行安装程序
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span>  /app/oracle/product/19.3.0.0/db_1
+./runInstaller
+</code></pre></div></p>
+<p>使用lsnrctl status命令和tnsping MYDB命令进行数据库检测。
+<div class="highlight"><pre><span></span><code>sqlplus system@MYDB
+</code></pre></div>
+输入密码
+<div class="highlight"><pre><span></span><code><span class="k">select</span> instance_name, status from  v<span class="nv">$instance</span><span class="p">;</span>
+</code></pre></div>
+检查STATUS是否是OPEN</p>
+<p>密码永不过期的设置：</p>
+<div class="highlight"><pre><span></span><code>sqlplus system/system_pwd@MYDB
+ALTER PROFILE DEFAULT LIMIT  PASSWORD_LIFE_TIME UNLIMITED<span class="p">;</span>
+<span class="nb">exit</span>
+</code></pre></div>
+<h2 id="apache">安装Apache</h2>
+<p>使用root进行操作</p>
+<div class="highlight"><pre><span></span><code>systemctl <span class="nb">enable</span> httpd
+systemctl start httpd
+systemctl status httpd
+chkconfig httpd on
+</code></pre></div>
+<p>注释掉这行</p>
+<h1 id="includeoptional-confdconf">IncludeOptional conf.d/*.conf</h1>
+<p>添加如下三行</p>
+<p>KeepAlive On</p>
+<p>KeepAliveTimeout 6</p>
+<p>MaxKeepAliveRequests 400</p>
+<p>测试apache服务是否启动成功。浏览器地址栏输入http://localhost，看到以下画面表示成功</p>
+<h2 id="java">安装Java</h2>
+<p><a href="https://github.com/ibmruntimes/semeru17-binaries/releases/download/jdk-17.0.5%2B8_openj9-0.35.0/ibm-semeru-open-jdk_x64_linux_17.0.5_8_openj9-0.35.0.tar.gz">jdk</a></p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /app/
+mkdir openjdk
+<span class="nb">cd</span> openjdk/
+ls
+tar xvfz  /tmp/ibm-semeru-open-jdk_x64_linux_17.0.5_8_openj9-0.35.0.tar.gz
+mv jdk-17.0.5+8 jdk17
+</code></pre></div>
+<p>编辑~/.bash_profile文件，在PATH之后添加</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/app/openjdk/jdk17
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span>
+<span class="nb">source</span> ~/.bash_profile
+which java
+
+/app/openjdk/jdk17/bin/java
+</code></pre></div>
+<h2 id="_9">生成证书并安装</h2>
+<p>使用root账号操作</p>
+<p>```bash
+cd /etc/httpd/conf
+vi httpd.conf
+<div class="highlight"><pre><span></span><code>&lt;在文件末尾添加以下内容&gt;
+
+```xml
+
+&lt;IfModule !ssl_module&gt;
+    LoadModule ssl_module modules/mod_ssl.so
+&lt;/IfModule&gt;
+
+SSLRandomSeed startup builtin
+SSLRandomSeed connect builtin
+SSLCryptoDevice builtin
+
+&lt;VirtualHost r2023x.mydomain.com:80&gt;
+    ServerName r2023x.mydomain.com
+    DocumentRoot &quot;/var/www/html&quot;
+&lt;/VirtualHost&gt;
+
+Include conf/r2023x.conf
+</code></pre></div></p>
+<p>新建r2023x.conf文件 :</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/httpd/conf
+vi r2023x.conf
+</code></pre></div>
+<p>Add the following lines</p>
+<div class="highlight"><pre><span></span><code>Listen 443
+
+<span class="nt">&lt;VirtualHost</span> <span class="err">r2023x.mydomain.com:443</span><span class="nt">&gt;</span>
+
+    ServerName r2023x.mydomain.com
+    ServerAlias r2023x
+
+    ErrorLog logs/r2023x_error_log
+    TransferLog logs/r2023x_access_log
+
+    LogLevel warn
+    SSLEngine on
+    SSLProxyEngine on
+
+    SSLCertificateFile conf/ssl/r2023x.crt
+    SSLCertificateKeyFile conf/ssl/r2023x.key
+
+    SetEnvIf User-Agent &quot;.*MSIE.*&quot;  \
+        nokeepalive ssl-unclean-shutdown  \
+        downgrade-1.0  force-response-1.0
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre></div>
+<h2 id="apache_1">重启apache服务</h2>
+<div class="highlight"><pre><span></span><code>systemctl restarthttpd
+</code></pre></div>
+<p>打开浏览器，输入https://r2023x.mydomain.com，看到绿色的锁头表示证书安装成功。</p>
+<h2 id="3dpassport">安装3DPassport服务</h2>
+<h3 id="_10">数据库脚本</h3>
+<div class="highlight"><pre><span></span><code>dbstart <span class="nv">$ORACLE_HOME</span>
+sqlplus / as sysdba
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">x3dpassadmin_ts</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">DATAFILE</span><span class="w"> </span><span class="s1">&#39;/app/oracle/oradata/MYDB/x3dpassadmin_ts.dbf&#39;</span><span class="w">  </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"></span>
+<span class="w">    </span><span class="n">AUTOEXTEND</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="n">MAXSIZE</span><span class="w"> </span><span class="n">UNLIMITED</span><span class="w"></span>
+<span class="w">    </span><span class="n">EXTENT</span><span class="w"> </span><span class="n">MANAGEMENT</span><span class="w"> </span><span class="k">LOCAL</span><span class="w"></span>
+<span class="w">    </span><span class="n">SEGMENT</span><span class="w"> </span><span class="k">SPACE</span><span class="w"> </span><span class="n">MANAGEMENT</span><span class="w"> </span><span class="n">AUTO</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w">  </span><span class="n">x3dpasstokens_ts</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">DATAFILE</span><span class="w">  </span><span class="s1">&#39;/app/oracle/oradata/MYDB/x3dpasstokens_ts.DBF&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">AUTOEXTEND</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="n">MAXSIZE</span><span class="w"> </span><span class="n">UNLIMITED</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">EXTENT</span><span class="w"> </span><span class="n">MANAGEMENT</span><span class="w"> </span><span class="k">LOCAL</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">SEGMENT</span><span class="w"> </span><span class="k">SPACE</span><span class="w"> </span><span class="n">MANAGEMENT</span><span class="w"> </span><span class="n">AUTO</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">Qwerty12345</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w">  </span><span class="n">x3dpassadmin_ts</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">PUBLIC</span><span class="w"> </span><span class="n">SYNONYM</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">SEQUENCE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">SESSION</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">SYNONYM</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">PUBLIC</span><span class="w"> </span><span class="n">SYNONYM</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="n">UNLIMITED</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpassadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w">  </span><span class="k">BY</span><span class="w"> </span><span class="n">Qwerty12345</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w">  </span><span class="n">x3dpasstokens_ts</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">PUBLIC</span><span class="w"> </span><span class="n">SYNONYM</span><span class="w"> </span><span class="k">TO</span><span class="w">  </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">SEQUENCE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">SESSION</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="n">SYNONYM</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">PUBLIC</span><span class="w"> </span><span class="n">SYNONYM</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">GRANT</span><span class="w"> </span><span class="n">UNLIMITED</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3dpasstokens</span><span class="p">;</span><span class="w"></span>
+
+<span class="w"> </span><span class="o">```</span><span class="w"></span>
+
+<span class="w"> </span><span class="err">从</span><span class="w"> </span><span class="n">V6R2023x</span><span class="p">.</span><span class="n">AM_3DEXP_Platform</span><span class="p">.</span><span class="n">AllOS</span><span class="p">.</span><span class="mi">3</span><span class="o">-</span><span class="mi">17</span><span class="p">.</span><span class="n">iso文件中找到3DPassport</span><span class="o">/</span><span class="n">Linux64</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="err">，运行</span><span class="n">StartGUI</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
+
+
+<span class="err">安装完毕，用</span><span class="n">root编辑r2023x</span><span class="p">.</span><span class="n">conf文件</span><span class="w"></span>
+
+<span class="o">```</span><span class="n">bash</span><span class="w"></span>
+<span class="n">cd</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">conf</span><span class="w"></span>
+<span class="n">vi</span><span class="w"> </span><span class="n">r2023x</span><span class="p">.</span><span class="n">conf</span><span class="w"></span>
+</code></pre></div>
+<p>文件末尾，</VirtualHost>之前，添加一行</p>
+<div class="highlight"><pre><span></span><code>Include /app/DassaultSystemes/R2023x/3DPassport/linux_a64/templates/3DPassport_httpd_fragment.conf
+</code></pre></div>
+<p>测试3DPassport服务</p>
 
 
 
