@@ -689,6 +689,35 @@ sqlplus / as sysdba
 <div class="highlight"><pre><span></span><code>Include /app/DassaultSystemes/R2023x/3DPassport/linux_a64/templates/3DPassport_httpd_fragment.conf
 </code></pre></div>
 <p>测试3DPassport服务</p>
+<h2 id="3ddashboard">安装3DDashboard服务</h2>
+<p>数据库脚本</p>
+<div class="highlight"><pre><span></span><code>dbstart <span class="nv">$ORACLE_HOME</span>
+
+sqlplus / as sysdba
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">x3ddashadmin_ts</span><span class="w"></span>
+
+<span class="n">DATAFILE</span><span class="w">  </span><span class="s1">&#39;/app/oracle/oradata/MYDB/x3ddashadmin_ts.dbf&#39;</span><span class="w"> </span><span class="k">SIZE</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"></span>
+
+<span class="n">AUTOEXTEND</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">NEXT</span><span class="w"> </span><span class="mi">10</span><span class="n">M</span><span class="w"> </span><span class="n">MAXSIZE</span><span class="w"> </span><span class="n">UNLIMITED</span><span class="w"></span>
+
+<span class="n">EXTENT</span><span class="w"> </span><span class="n">MANAGEMENT</span><span class="w"> </span><span class="k">LOCAL</span><span class="w"></span>
+
+<span class="n">SEGMENT</span><span class="w"> </span><span class="k">SPACE</span><span class="w"> </span><span class="n">MANAGEMENT</span><span class="w"> </span><span class="n">AUTO</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">x3ddashadmin</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w">  </span><span class="n">Qwerty12345</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">x3ddashadmin</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w">  </span><span class="n">x3ddashadmin_ts</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3ddashadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">GRANT</span><span class="w"> </span><span class="n">RESOURCE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">x3ddashadmin</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">GRANT</span><span class="w"> </span><span class="n">UNLIMITED</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="k">TO</span><span class="w">  </span><span class="n">x3ddashadmin</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<p>从V6R2023x.AM_3DEXP_Platform.AllOS.3-17.iso找到</p>
+<div class="highlight"><pre><span></span><code>3DDashboard/Linux64/1/StartGUI.sh
+</code></pre></div>
 
 
 
